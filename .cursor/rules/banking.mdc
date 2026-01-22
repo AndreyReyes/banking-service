@@ -1,0 +1,43 @@
+---
+description: Project rules for the banking REST service
+---
+
+# Cursor Rules — Banking Service
+
+## Must Follow
+- Do not modify `FDE_Tech_Assessment_(T2).md`.
+- Enforce TDD: write failing tests before implementation.
+- Use structured JSON logging with `structlog`.
+- Use safe SQLite patterns (transactions, WAL mode, busy timeout).
+- Ensure compatibility with Ubuntu 24.04.
+- Always check DB health on startup and fail fast if unhealthy.
+
+## API & Data
+- Keep API versioned under `/v1`.
+- Use consistent error envelope and HTTP status codes.
+- Store money in minor units (integers) to avoid float errors.
+- Use UTC timestamps everywhere.
+- Use Alembic migrations for schema changes.
+
+## Security
+- Never log or commit secrets.
+- Hash passwords with bcrypt/argon2.
+- Validate all inputs via Pydantic models.
+
+## Testing
+- Add unit tests for services and integration tests for endpoints.
+- Maintain coverage and include new tests with each feature.
+
+## Logging
+- Include `request_id`, `method`, `path`, `status_code`, `duration_ms`.
+- Log exceptions with stack traces and contextual fields.
+
+## Database Safety
+- Use explicit transactions for multi‑step operations.
+- Use `SELECT 1` for health checks.
+- Avoid raw SQL unless necessary and documented.
+
+## Dev Workflow
+- Conventional commits (`feat:`, `fix:`, `test:`, `docs:`).
+- Keep commits small and meaningful.
+- Update docs when behavior or endpoints change.
