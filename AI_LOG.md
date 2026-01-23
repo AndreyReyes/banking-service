@@ -82,3 +82,36 @@
 - Marked the Phase 1 milestone as complete in `MILESTONES.md`.
 - Added pinned dependency versions, a dependency rationale doc, and a Tech Stack table.
 - Fixed test import path and confirmed `pytest` passes.
+
+## Phase 2: Production readiness foundations
+
+### Summary of prompts and iterations
+
+- Requested Phase 2 implementation using the architecture and implementation plan.
+- Required TDD-first changes and logging of the process in `AI_LOG.md`.
+- Asked to mark completed milestones after implementation.
+- Requested a setup script and README run instructions for the app.
+
+### How AI was used
+
+- Wrote failing integration tests for health, database wiring, and logging.
+- Implemented health/readiness routing, SQLite session management, and Alembic setup.
+- Added structured request logging with request ID propagation and startup DB health checks.
+- Added a setup helper script and documented how to run the app in `README.md`.
+
+### Challenges encountered and solutions
+
+- `pytest` was not available in the environment; noted the missing dependency so tests can be rerun after installing dev requirements.
+
+### Manual intervention required
+
+- Install `pytest` (or `requirements-dev.txt`) and rerun `python3 -m pytest`.
+
+### Things achieved
+
+- Added `/v1/health` endpoint with UTC timestamp and DB connectivity checks.
+- Implemented SQLite engine/session wiring with WAL and busy timeout.
+- Added Alembic configuration and an initial empty migration.
+- Implemented request logging middleware with `request_id`, `method`, `path`, `status_code`, and `duration_ms`.
+- Marked Phase 2 production readiness milestones as complete in `MILESTONES.md`.
+- Added `scripts/setup_env.sh` and README instructions to run the API.

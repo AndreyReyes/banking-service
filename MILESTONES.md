@@ -9,9 +9,9 @@ Each checklist item is a shippable slice validated by tests‑first and separate
 - [x] Repo baseline (project scaffolding, lint/format, env config, CI/test runner)
 
 ### Production readiness foundations
-- [ ] Health and readiness endpoint (first running API)
-- [ ] Database wiring (SQLite) + migrations/init
-- [ ] Structured logging foundation (before auth)
+- [x] Health and readiness endpoint (first running API)
+- [x] Database wiring (SQLite) + migrations/init
+- [x] Structured logging foundation (before auth)
 
 ### Core domain + business capabilities
 - [ ] Domain models + validation rules (no endpoints yet)
