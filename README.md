@@ -34,6 +34,12 @@ source .venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 
+Or run the setup helper:
+
+```bash
+./scripts/setup_env.sh
+```
+
 ## Environment
 
 Set environment variables before running the app or tests:
@@ -48,4 +54,11 @@ Set environment variables before running the app or tests:
 
 ```bash
 pytest
+```
+
+## Run the app
+
+```bash
+source .venv/bin/activate
+uvicorn app.main:app --reload
 ```
