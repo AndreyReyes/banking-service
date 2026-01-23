@@ -2,6 +2,7 @@ import logging
 from typing import Any
 
 import structlog
+from structlog.contextvars import merge_contextvars
 
 
 def configure_logging(log_level: str = "INFO") -> None:
@@ -11,6 +12,7 @@ def configure_logging(log_level: str = "INFO") -> None:
 
     structlog.configure(
         processors=[
+            merge_contextvars,
             structlog.processors.TimeStamper(fmt="iso"),
             structlog.processors.add_log_level,
             structlog.processors.StackInfoRenderer(),
