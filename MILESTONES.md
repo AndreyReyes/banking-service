@@ -6,7 +6,7 @@ These milestones represent a checkpoint‑based delivery plan. Each checkpoint i
 Each checklist item is a shippable slice validated by tests‑first and separated by a clean commit.
 
 ### Project scaffolding & developer experience
-- [ ] Repo baseline (project scaffolding, lint/format, env config, CI/test runner)
+- [x] Repo baseline (project scaffolding, lint/format, env config, CI/test runner)
 
 ### Production readiness foundations
 - [ ] Health and readiness endpoint (first running API)
