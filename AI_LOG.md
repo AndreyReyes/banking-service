@@ -47,3 +47,38 @@
 - Added `MILESTONES.md` and linked it from `README.md`.
 - Added `ARCHITECTURE.md` and `IMPLEMENTATION_PLAN.md` with schema and diagrams.
 - Updated architecture to include refresh token rotation and centralized audit logs.
+
+## Phase 1: Project scaffolding & developer experience
+
+### Summary of prompts and iterations
+
+- Requested Phase 1 implementation using the architecture and implementation plan.
+- Required TDD-first changes with process documentation in `AI_LOG.md`.
+- Asked to install dependencies, run tests, pin versions, and document library choices.
+
+### How AI was used
+
+- Created a test-first scaffold and then implemented the minimal FastAPI app.
+- Added dev tooling configuration (pytest, ruff, black, mypy) and CI workflow.
+- Documented setup instructions and environment expectations.
+- Installed dependencies, pinned versions, and captured rationale in `DEPENDENCIES.md`.
+
+### Challenges encountered and solutions
+
+- Repository ignores `.env.example` via global ignore rules; documented env vars in `README.md` instead.
+- System `python` command unavailable; used `python3` for environment setup.
+
+### Manual intervention required
+
+- None during implementation; dependencies were installed and tests executed by the AI.
+
+### Things achieved
+
+- Added app skeleton with `create_app()` and core config/logging stubs.
+- Added smoke test for test runner discovery (TDD baseline).
+- Added `pyproject.toml` tooling config plus `requirements.txt` and `requirements-dev.txt`.
+- Added GitHub Actions CI workflow for lint/format/type/test checks.
+- Expanded `.gitignore` and updated `README.md` with setup and test instructions.
+- Marked the Phase 1 milestone as complete in `MILESTONES.md`.
+- Added pinned dependency versions, a dependency rationale doc, and a Tech Stack table.
+- Fixed test import path and confirmed `pytest` passes.
