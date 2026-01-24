@@ -25,6 +25,7 @@ is managed in `requirements-dev.txt`.
 
 - **Pytest**: Reliable test runner with rich fixtures for unit and integration
   testing.
+- **pytest-cov**: Coverage enforcement via pytest to gate CI and local runs.
 - **HTTPX**: Modern HTTP client used for integration tests against the FastAPI
   app.
 - **Coverage**: Test coverage reporting to enforce quality gates.

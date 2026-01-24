@@ -20,6 +20,7 @@ See [DEPENDENCIES.md](./DEPENDENCIES.md) for dependency rationale.
 | ORM | SQLAlchemy | DB access + portability | 2.0.46 |
 | Migrations | Alembic | Schema migrations | 1.18.1 |
 | Testing | Pytest | Test runner | 9.0.2 |
+| Coverage Plugin | pytest-cov | Coverage gate for tests | 7.0.0 |
 | HTTP Client | HTTPX | Integration testing | 0.28.1 |
 | Coverage | Coverage.py | Coverage reporting | 7.13.1 |
 | Linting | Ruff | Linting | 0.14.14 |
@@ -59,9 +60,36 @@ Notes:
 pytest
 ```
 
+Coverage is enforced at 92% for the `app` package. For optional Docker smoke
+tests, set `RUN_DOCKER_TESTS=1` and ensure Docker + Docker Compose are
+installed.
+
+Docker requirements:
+- Docker Engine 29.1.5+ (tested on Ubuntu 24.04).
+- Docker Compose v5.0.1+ via `docker compose`.
+
 ## Run the app
 
 ```bash
 source .venv/bin/activate
 uvicorn app.main:app --reload
+```
+
+## Run with Docker
+
+```bash
+docker build -t banking-service:local .
+docker run --rm -p 8000:8000 \
+  -e APP_ENV=dev \
+  -e DATABASE_URL=sqlite:///./data/banking.db \
+  -e LOG_LEVEL=INFO \
+  -e JWT_SECRET=dev_insecure_secret_change_me \
+  -v banking_data:/app/data \
+  banking-service:local
+```
+
+## Run with Docker Compose
+
+```bash
+docker compose up --build
 ```

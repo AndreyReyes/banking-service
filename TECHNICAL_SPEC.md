@@ -117,7 +117,7 @@ Notes:
 - Red‑Green‑Refactor for each feature.
 - Unit tests for service/business logic.
 - Integration tests for API endpoints and DB behavior.
-- Coverage report with minimum 80% target.
+- Coverage report with minimum 92% target.
 
 ## Containerization
 - Multi‑stage Dockerfile.
