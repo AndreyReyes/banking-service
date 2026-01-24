@@ -175,3 +175,39 @@
 - Implemented centralized exception handling with consistent error payloads.
 - Resolved test failure and confirmed full test suite passes.
 - Marked the Phase 4 milestone complete in `MILESTONES.md`.
+
+## Phase 5: Operational deliverables
+
+### Summary of prompts and iterations
+- Requested Phase 5 implementation with regression testing first and TDD workflow.
+- Asked to implement operational deliverables and update milestones when tests pass.
+- Required updates to `AI_LOG.md` with a detailed summary of AI usage and outcomes.
+
+### How AI was used
+- Ran regression tests in a fresh venv, then added failing containerization tests.
+- Implemented Docker packaging and docker-compose configuration aligned with the
+  operational checklist.
+- Added coverage enforcement to pytest and updated documentation for new tooling.
+
+### Challenges encountered and solutions
+- Docker smoke tests require Docker/Compose; tests are skipped unless
+  `RUN_DOCKER_TESTS=1` is set to avoid false failures in non-Docker environments.
+- Docker Compose health checks were flaking on cold starts; switched the test to
+  wait for container health (`docker compose --wait`) before hitting `/v1/health`.
+
+### Manual intervention required
+- None. Optional: set `RUN_DOCKER_TESTS=1` with Docker installed to run container
+  smoke tests.
+
+### Things achieved
+- Added multi-stage `Dockerfile`, `docker-compose.yml`, and `.dockerignore`.
+- Added containerization integration tests for Dockerfile/compose validation plus
+  optional build/health smoke tests.
+- Enforced 92% coverage gate via `pytest-cov` and updated `DEPENDENCIES.md`.
+- Updated `README.md` with Docker run/compose instructions and coverage notes.
+- Updated coverage target in `TECHNICAL_SPEC.md`.
+- Confirmed Docker `29.1.5` and Docker Compose `v5.0.1` are installed and
+  documented as supported versions.
+- Ran container smoke tests successfully with `RUN_DOCKER_TESTS=1` and the full
+  test suite passing.
+- Marked Phase 5 operational milestones complete in `MILESTONES.md`.

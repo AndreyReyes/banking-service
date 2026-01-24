@@ -28,9 +28,9 @@ Each checklist item is a shippable slice validated by tests‑first and separate
 - [x] Error handling production pass
 
 ### Operational deliverables
-- [ ] Containerization + env configs
-- [ ] Test coverage checkpoint (prove completeness)
-- [ ] Documentation + AI usage report
+- [x] Containerization + env configs
+- [x] Test coverage checkpoint (prove completeness)
+- [x] Documentation + AI usage report
 
 ## How to read this plan
 They’re a milestone‑based delivery plan + quality gates, broken into incremental TDD checkpoints.
