@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: banking-service:local
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: sqlite:///./data/banking.db
+      LOG_LEVEL: INFO
+      JWT_SECRET: dev_insecure_secret_change_me
+      CORS_ORIGINS: "*"
+    volumes:
+      - banking_data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/v1/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  banking_data:
