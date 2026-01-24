@@ -146,3 +146,4 @@
 - Added comprehensive integration tests for core resources and unit tests for password validation.
 - Enforced production `JWT_SECRET` validation and documented it in `README.md`, `TECHNICAL_SPEC.md`, `ARCHITECTURE.md`, and `SECURITY.md`.
 - Marked Phase 3 milestones complete and confirmed full test suite passes.
+- Fixed audit logging for failed logins, tightened transaction create validation, and prevented same-account transfers with new tests.
