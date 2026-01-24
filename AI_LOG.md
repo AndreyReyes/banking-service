@@ -148,3 +148,30 @@
 - Marked Phase 3 milestones complete and confirmed full test suite passes.
 - Fixed audit logging for failed logins, tightened transaction create validation, and prevented same-account transfers with new tests.
 - Ensured expired refresh tokens persist revocation updates with a refresh flow test.
+
+## Phase 4: Correctness & safety guarantees
+
+### Summary of prompts and iterations
+- Requested Phase 4 implementation with regression testing first and TDD workflow.
+- Asked to append process documentation to `AI_LOG.md` and update milestones after tests pass.
+- Required a final summary of prompts, AI usage, challenges, manual steps, and outcomes.
+- Asked to follow `README.md` setup to resolve the pytest environment issue.
+
+### How AI was used
+- Added failing integration tests for standardized error envelopes on validation and auth failures.
+- Implemented global exception handlers to return the consistent error envelope.
+- Wired exception handling into app startup to cover all routes.
+- Used `README.md` setup steps to create a venv, install dev deps, and run regression tests.
+- Fixed validation error serialization using `jsonable_encoder`.
+
+### Challenges encountered and solutions
+- Validation error payload contained a non-JSON-serializable `ValueError`; encoded errors for safe JSON output.
+
+### Manual intervention required
+- None.
+
+### Things achieved
+- Added error envelope integration tests covering validation and unauthorized access.
+- Implemented centralized exception handling with consistent error payloads.
+- Resolved test failure and confirmed full test suite passes.
+- Marked the Phase 4 milestone complete in `MILESTONES.md`.

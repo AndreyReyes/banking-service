@@ -25,7 +25,7 @@ Each checklist item is a shippable slice validated by tests‑first and separate
 - [x] Statements (MVP version)
 
 ### Correctness & safety guarantees
-- [ ] Error handling production pass
+- [x] Error handling production pass
 
 ### Operational deliverables
 - [ ] Containerization + env configs
