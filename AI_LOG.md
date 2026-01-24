@@ -115,3 +115,34 @@
 - Implemented request logging middleware with `request_id`, `method`, `path`, `status_code`, and `duration_ms`.
 - Marked Phase 2 production readiness milestones as complete in `MILESTONES.md`.
 - Added `scripts/setup_env.sh` and README instructions to run the API.
+
+## Phase 3: Core domain + business capabilities
+
+### Summary of prompts and iterations
+- Requested Phase 3 implementation using architecture/plan with regression testing first.
+- Required TDD-first implementation and updates to `MILESTONES.md` and `AI_LOG.md`.
+- Raised security issues around `JWT_SECRET` validation and bcrypt password length handling.
+- Asked for documentation updates in `README.md`, `TECHNICAL_SPEC.md`, and `ARCHITECTURE.md`.
+- Requested continuation to complete remaining Phase 3 endpoints and tests.
+
+### How AI was used
+- Ran regression tests in a new virtual environment and implemented new failing tests first.
+- Built core domain models, schemas, services, routers, and migrations for accounts, transactions, transfers, cards, and statements.
+- Added protected routes with ownership checks and updated authentication dependencies.
+- Implemented password length validation to avoid bcrypt errors and added security documentation.
+- Updated milestones and documentation to reflect new behavior and requirements.
+
+### Challenges encountered and solutions
+- System Python was externally managed (PEP 668); created a venv to run tests and install dependencies.
+- Bcrypt threw on >72 byte passwords; added schema validation and defensive checks in security helpers.
+- SQLAlchemy `session.begin()` conflicted with autobegin; switched to `begin_nested()` for transfers.
+
+### Manual intervention required
+- None. All environment setup, tests, and changes were performed by the AI.
+
+### Things achieved
+- Added core domain tables and migrations for accounts, transactions, transfers, and cards.
+- Implemented account holders CRUD, account creation/listing, transactions, transfers, cards, and statements endpoints.
+- Added comprehensive integration tests for core resources and unit tests for password validation.
+- Enforced production `JWT_SECRET` validation and documented it in `README.md`, `TECHNICAL_SPEC.md`, `ARCHITECTURE.md`, and `SECURITY.md`.
+- Marked Phase 3 milestones complete and confirmed full test suite passes.

@@ -14,15 +14,15 @@ Each checklist item is a shippable slice validated by tests‑first and separate
 - [x] Structured logging foundation (before auth)
 
 ### Core domain + business capabilities
-- [ ] Domain models + validation rules (no endpoints yet)
-- [ ] Signup (first real feature)
-- [ ] Authentication (login + token) + authentication middleware
-- [ ] Account holders CRUD (first protected resource)
-- [ ] Accounts (create + view + list)
-- [ ] Transactions (ledger entries + balance calculation)
-- [ ] Money transfer (the banking core)
-- [ ] Cards (minimal but real)
-- [ ] Statements (MVP version)
+- [x] Domain models + validation rules (no endpoints yet)
+- [x] Signup (first real feature)
+- [x] Authentication (login + token) + authentication middleware
+- [x] Account holders CRUD (first protected resource)
+- [x] Accounts (create + view + list)
+- [x] Transactions (ledger entries + balance calculation)
+- [x] Money transfer (the banking core)
+- [x] Cards (minimal but real)
+- [x] Statements (MVP version)
 
 ### Correctness & safety guarantees
 - [ ] Error handling production pass

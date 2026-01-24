@@ -71,6 +71,7 @@ API --> Health
 - JWT access tokens (with `sub`, `jti`, `exp`).
 - Refresh token rotation with server‑side persistence and revoke support.
 - Centralized audit logging for sensitive actions with IP and device ID.
+- `JWT_SECRET` must be explicitly set in production (fail fast if unset).
 
 ### Observability
 - Structlog JSON logs with standard fields.

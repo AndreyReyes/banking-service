@@ -47,8 +47,11 @@ Set environment variables before running the app or tests:
 - `APP_ENV` (dev/test/prod)
 - `DATABASE_URL`
 - `LOG_LEVEL`
-- `JWT_SECRET`
+- `JWT_SECRET` (required in production; app fails fast if unset)
 - `CORS_ORIGINS`
+
+Notes:
+- In production (`APP_ENV=prod`/`production`), `JWT_SECRET` must be set to a non-default value.
 
 ## Tests
 

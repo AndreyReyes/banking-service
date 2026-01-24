@@ -106,9 +106,12 @@ Constraints:
 Environment variables (validated):
 - `APP_ENV` (dev/test/prod)
 - `DATABASE_URL`
-- `JWT_SECRET`
+- `JWT_SECRET` (required in production; app fails fast if unset)
 - `LOG_LEVEL`
 - `CORS_ORIGINS`
+
+Notes:
+- `JWT_SECRET` must be explicitly set when `APP_ENV` is `prod`/`production`.
 
 ## Testing Strategy (TDD)
 - Red‑Green‑Refactor for each feature.
