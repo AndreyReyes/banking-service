@@ -7,11 +7,12 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 TransactionType = Literal["deposit", "withdrawal", "transfer_in", "transfer_out"]
+TransactionCreateType = Literal["deposit", "withdrawal"]
 
 
 class TransactionCreate(BaseModel):
     account_id: int
-    type: TransactionType
+    type: TransactionCreateType
     amount: int = Field(gt=0)
     currency: str = Field(min_length=3, max_length=10)
 

@@ -86,3 +86,32 @@ def test_withdrawal_rejects_negative_balance(tmp_path: Path, monkeypatch) -> Non
             },
         )
         assert withdrawal_response.status_code == 400
+
+
+def test_transaction_rejects_transfer_types(tmp_path: Path, monkeypatch) -> None:
+    database_url = configure_test_db(tmp_path, monkeypatch, "transfer-types")
+    apply_migrations(database_url)
+    app = create_app()
+
+    with TestClient(app) as client:
+        signup(client, "ada@example.com", "supersecure123")
+        tokens = login(client, "ada@example.com", "supersecure123")
+
+        account_response = client.post(
+            "/v1/accounts",
+            headers={"Authorization": f"Bearer {tokens['access_token']}"},
+            json={"type": "checking", "currency": "USD"},
+        )
+        account_id = account_response.json()["id"]
+
+        response = client.post(
+            "/v1/transactions",
+            headers={"Authorization": f"Bearer {tokens['access_token']}"},
+            json={
+                "account_id": account_id,
+                "type": "transfer_out",
+                "amount": 100,
+                "currency": "USD",
+            },
+        )
+        assert response.status_code == 422

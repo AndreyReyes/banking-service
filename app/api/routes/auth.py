@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
 from app.db.models import User
-from app.db.session import get_db
+from app.db.session import get_db, get_sessionmaker
 from app.schemas.auth import (
     LoginRequest,
     MeResponse,
@@ -66,10 +66,11 @@ def login(
     service = AuthService(session)
     ip_address, device_id = _get_request_context(request)
 
-    with session.begin():
-        user = service.authenticate_user(payload.email, payload.password)
-        if not user:
-            service.write_audit_log(
+    user = service.authenticate_user(payload.email, payload.password)
+    if not user:
+        SessionLocal = get_sessionmaker()
+        with SessionLocal.begin() as audit_session:
+            AuthService(audit_session).write_audit_log(
                 user_id=None,
                 event_type="login",
                 status="failure",
@@ -77,10 +78,11 @@ def login(
                 device_id=device_id,
                 metadata={"email": payload.email},
             )
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid credentials"
-            )
-        tokens = service.issue_tokens(user, ip_address, device_id)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid credentials"
+        )
+
+    tokens = service.issue_tokens(user, ip_address, device_id)
 
     return TokenResponse(**tokens)
 

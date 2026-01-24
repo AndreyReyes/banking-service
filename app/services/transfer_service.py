@@ -19,6 +19,8 @@ class TransferService:
     ) -> Transfer:
         if from_account.holder.user_id != user.id:
             raise ValueError("account not accessible")
+        if from_account.id == to_account.id:
+            raise ValueError("cannot transfer to same account")
         if from_account.currency != currency or to_account.currency != currency:
             raise ValueError("currency mismatch")
         if from_account.balance - amount < 0:

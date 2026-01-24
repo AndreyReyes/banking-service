@@ -87,6 +87,30 @@ def test_login_returns_tokens_and_me_requires_auth(tmp_path: Path, monkeypatch) 
         assert unauthenticated.status_code == 401
 
 
+def test_failed_login_persists_audit_log(tmp_path: Path, monkeypatch) -> None:
+    database_url = _configure_test_db(tmp_path, monkeypatch)
+    _apply_migrations(database_url)
+    app = create_app()
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/v1/auth/login",
+            headers={"X-Device-Id": "device-abc"},
+            json={"email": "missing@example.com", "password": "supersecure123"},
+        )
+
+    assert response.status_code == 401
+
+    SessionLocal = db_session.get_sessionmaker()
+    with SessionLocal() as session:
+        audit_log = (
+            session.query(AuditLog)
+            .filter(AuditLog.event_type == "login", AuditLog.status == "failure")
+            .one()
+        )
+        assert audit_log.meta["email"] == "missing@example.com"
+
+
 def test_signup_rejects_overlong_password(tmp_path: Path, monkeypatch) -> None:
     database_url = _configure_test_db(tmp_path, monkeypatch)
     _apply_migrations(database_url)
