@@ -9,6 +9,7 @@ from app.api.routes.statements import router as statements_router
 from app.api.routes.transactions import router as transactions_router
 from app.api.routes.transfers import router as transfers_router
 from app.core.config import get_settings
+from app.core.errors import add_exception_handlers
 from app.core.logging import configure_logging
 from app.core.middleware import RequestLoggingMiddleware
 from app.db.session import assert_db_healthy
@@ -24,6 +25,7 @@ def create_app() -> FastAPI:
     )
 
     app.add_middleware(RequestLoggingMiddleware)
+    add_exception_handlers(app)
     app.include_router(health_router)
     app.include_router(auth_router)
     app.include_router(account_holders_router)
