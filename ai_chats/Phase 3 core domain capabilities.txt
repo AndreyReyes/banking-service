@@ -4247,3 +4247,348 @@ I'm adding a note on bug fixes under the Phase3 section and appending a summary 
 
 assistant:
 Updated `AI_LOG.md` to reflect the latest fixes and tests. No other docs needed changes for these last tweaks.
+
+user:
+<user_query>
+Can you save  a transcript of this chat @/home/mini/.cursor/projects/home-mini-Documents-coding-invisible-interview-cursor-banking-service/agent-transcripts/42bcdd5e-795c-4d72-98fb-54c226b1af90.txt  to a text file named 'Phase 3 core domain capabilities.txt' to @ai_chats  at the top directory (create it if doesn't exist and replace it if it already exists).
+</user_query>
+
+assistant:
+[Thinking] **Copying file with overwrite**
+
+I'm planning to use the shell's `cp` command to copy the file, allowing overwriting since the destination file already exists.
+[Tool call] Shell
+  command: cp "/home/mini/.cursor/projects/home-mini-Documents-coding-invisible-interview-cursor-banking-service/agent-transcripts/42bcdd5e-795c-4d72-98fb-54c226b1af90.txt" "/home/mini/Documents/coding/invisible_interview/cursor/banking-service/ai_chats/Phase 3 core domain capabilities.txt"
+  description: Copy transcript to ai_chats file
+
+[Tool result] Shell
+
+assistant:
+Saved the transcript to `ai_chats/Phase 3 core domain capabilities.txt` (replaced).
+
+user:
+<user_query>
+Group the changes in a logical way and stage  and commit as needed keeping commits and the commit messages useful and meaningfull while following the git guideances established.
+</user_query>
+
+assistant:
+[Tool call] Shell
+  command: git status -sb
+  description: Check git status summary
+[Tool call] Shell
+  command: git diff
+  description: View unstaged changes
+[Tool call] Shell
+  command: git log -5 --oneline
+  description: View recent commit messages
+
+[Tool result] Shell
+
+[Tool result] Shell
+
+[Tool result] Shell
+
+assistant:
+[Thinking] **Committing fixes and docs separately**
+
+I'm preparing two commits: one fixing login audit, transfer checks, and schema with related tests, and another for docs updates including AI_LOG and transcript files. I'll stage and commit these logically using heredoc messages.
+[Tool call] Shell
+  command: git add app/api/routes/auth.py app/schemas/transactions.py app/services/transfer_service.py tests/integration/test_auth.py tests/integration/test_transactions.py tests/integration/test_transfers.py
+  description: Stage bugfix code and tests
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git commit -m "$(cat <<'EOF'
+fix: harden auth, transactions, and transfers
+
+Persist failed login audits, align transaction validation with allowed types,
+and prevent same-account transfers with coverage for each case.
+EOF
+)"
+  description: Commit bugfixes and tests
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git add AI_LOG.md "ai_chats/Phase 3 core domain capabilities.txt"
+  description: Stage AI log and transcript updates
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git commit -m "$(cat <<'EOF'
+docs: update phase 3 log and transcript
+
+Record the latest Phase 3 fixes and refresh the chat transcript snapshot.
+EOF
+)"
+  description: Commit AI log and transcript
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git status -sb
+  description: Check git status after commits
+
+[Tool result] Shell
+
+assistant:
+Committed the latest changes in two logical commits:
+
+- `fix: harden auth, transactions, and transfers`
+- `docs: update phase 3 log and transcript`
+
+Branch is now `ahead 5`. Want me to push?
+
+user:
+<attached_files>
+
+<code_selection path="/home/mini/Documents/coding/invisible_interview/cursor/banking-service/app/api/routes/auth.py" lines="98-104">
+L98:```python
+L99:
+L100:```
+</code_selection>
+
+</attached_files>
+<user_query>
+Verify these issues exist and fix them:
+
+Bug 1:
+When an expired refresh token is used, `rotate_refresh_token` sets `revoked_at` on the token and returns `None`. The `HTTPException` is then raised **inside** the `session.begin()` block, causing SQLAlchemy to roll back the transaction, which loses the `revoked_at` update. This differs from the failed login pattern (lines 71-80) which correctly uses a separate session to persist audit data before raising the exception. The result is that expired tokens are never marked as revoked in the database, creating a data consistency issue.
+
+ @app/api/routes/auth.py:98-104 
+</user_query>
+
+assistant:
+[Thinking] **Planning token rotation fix**
+
+The token rotation currently revokes and returns None on expiration, causing session rollback before revocation persists. Considering calling rotate in a separate session or adjusting rotate to indicate status so the route can persist revocation reliably before raising errors.
+**Designing separate session for refresh token rotation**
+
+To reliably persist revocation before raising, the refresh endpoint will use its own session context that commits regardless of token rotation outcome, avoiding rollback on exceptions. The plan includes adjusting tests by setting refresh token TTL to negative values to simulate expiration and verify revoked tokens persist.
+[Tool call] ReadFile
+  path: /home/mini/Documents/coding/invisible_interview/cursor/banking-service/app/services/auth_service.py
+[Tool call] ReadFile
+  path: /home/mini/Documents/coding/invisible_interview/cursor/banking-service/tests/integration/test_auth.py
+
+[Tool result] ReadFile
+
+[Tool result] ReadFile
+
+assistant:
+[Thinking] **Refactoring refresh endpoint session handling**
+
+I'm removing the session parameter from the refresh endpoint and replacing it with a locally created session from get_sessionmaker, dropping get_db usage there while keeping get_db for signup and login routes. I'll also add a test for handling expired refresh tokens.
+[Tool call] ApplyPatch*** Begin Patch
+*** Update File: /home/mini/Documents/coding/invisible_interview/cursor/banking-service/app/api/routes/auth.py
+@@
+ @router.post("/refresh", response_model=TokenResponse)
+ def refresh(
+     payload: RefreshRequest,
+     request: Request,
+-    session: Session = Depends(get_db),
+ ) -> TokenResponse:
+-    service = AuthService(session)
++    SessionLocal = get_sessionmaker()
+     ip_address, device_id = _get_request_context(request)
+ 
+-    with session.begin():
+-        tokens = service.rotate_refresh_token(payload.refresh_token, ip_address, device_id)
+-        if not tokens:
+-            raise HTTPException(
+-                status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid refresh token"
+-            )
++    tokens: dict | None = None
++    with SessionLocal.begin() as refresh_session:
++        tokens = AuthService(refresh_session).rotate_refresh_token(
++            payload.refresh_token, ip_address, device_id
++        )
++
++    if not tokens:
++        raise HTTPException(
++            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid refresh token"
++        )
+ 
+     return TokenResponse(**tokens)
+*** End Patch
+
+[Tool result] ApplyPatch
+
+assistant:
+[Tool call] ApplyPatch*** Begin Patch
+*** Update File: /home/mini/Documents/coding/invisible_interview/cursor/banking-service/tests/integration/test_auth.py
+@@
+ def test_refresh_rotates_token_and_logs_audit(tmp_path: Path, monkeypatch) -> None:
+@@
+         assert audit_logs
+         assert audit_logs[0].device_id == "device-xyz"
++
++
++def test_expired_refresh_token_is_revoked(tmp_path: Path, monkeypatch) -> None:
++    monkeypatch.setenv("REFRESH_TOKEN_TTL_DAYS", "-1")
++    database_url = _configure_test_db(tmp_path, monkeypatch)
++    _apply_migrations(database_url)
++    app = create_app()
++
++    with TestClient(app) as client:
++        _signup(client, "ada@example.com", "supersecure123")
++
++        login_response = client.post(
++            "/v1/auth/login",
++            headers={"X-Device-Id": "device-expired"},
++            json={"email": "ada@example.com", "password": "supersecure123"},
++        )
++        refresh_token = login_response.json()["refresh_token"]
++
++        refresh_response = client.post(
++            "/v1/auth/refresh",
++            headers={"X-Device-Id": "device-expired"},
++            json={"refresh_token": refresh_token},
++        )
++        assert refresh_response.status_code == 401
++
++    SessionLocal = db_session.get_sessionmaker()
++    with SessionLocal() as session:
++        refresh_row = session.query(RefreshToken).filter_by(
++            token_hash=security.hash_refresh_token(refresh_token)
++        ).one()
++        assert refresh_row.revoked_at is not None
+*** End Patch
+
+[Tool result] ApplyPatch
+
+assistant:
+[Tool call] Shell
+  command: .venv/bin/python -m pytest tests/integration/test_auth.py::test_expired_refresh_token_is_revoked
+  description: Run expired refresh token test
+
+[Tool result] Shell
+
+assistant:
+[Tool call] ReadLints
+  paths: ["/home/mini/Documents/coding/invisible_interview/cursor/banking-service/app/api/routes/auth.py","/home/mini/Documents/coding/invisible_interview/cursor/banking-service/tests/integration/test_auth.py"]
+
+[Tool result] ReadLints
+
+assistant:
+Bug verified and fixed.
+
+What changed:
+- The refresh endpoint now performs rotation inside its own session/transaction and raises the `HTTPException` only after the commit, so `revoked_at` is persisted even for expired tokens.
+
+```88:107:app/api/routes/auth.py
+SessionLocal = get_sessionmaker()
+ip_address, device_id = _get_request_context(request)
+
+tokens: dict | None = None
+with SessionLocal.begin() as refresh_session:
+    tokens = AuthService(refresh_session).rotate_refresh_token(
+        payload.refresh_token, ip_address, device_id
+    )
+
+if not tokens:
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid refresh token"
+    )
+```
+
+Test added:
+- `test_expired_refresh_token_is_revoked`
+
+Test run:
+- `.venv/bin/python -m pytest tests/integration/test_auth.py::test_expired_refresh_token_is_revoked`
+
+Want me to update `AI_LOG.md` and then commit these changes?
+
+user:
+<user_query>
+Yes, please
+</user_query>
+
+assistant:
+[Tool call] ApplyPatch*** Begin Patch
+*** Update File: /home/mini/Documents/coding/invisible_interview/cursor/banking-service/AI_LOG.md
+@@
+ - Enforced production `JWT_SECRET` validation and documented it in `README.md`, `TECHNICAL_SPEC.md`, `ARCHITECTURE.md`, and `SECURITY.md`.
+ - Marked Phase 3 milestones complete and confirmed full test suite passes.
+ - Fixed audit logging for failed logins, tightened transaction create validation, and prevented same-account transfers with new tests.
++- Ensured expired refresh tokens persist revocation updates with a refresh flow test.
+*** End Patch
+
+[Tool result] ApplyPatch
+
+assistant:
+[Tool call] Shell
+  command: git status -sb
+  description: Check git status summary
+[Tool call] Shell
+  command: git diff
+  description: View unstaged changes
+[Tool call] Shell
+  command: git log -5 --oneline
+  description: View recent commit messages
+
+[Tool result] Shell
+
+[Tool result] Shell
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git add app/api/routes/auth.py tests/integration/test_auth.py
+  description: Stage refresh token fix and test
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git commit -m "$(cat <<'EOF'
+fix: persist expired refresh revocations
+
+Commit refresh token revocation updates before rejecting expired tokens and
+add coverage for the refresh flow.
+EOF
+)"
+  description: Commit refresh token fix and test
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git add AI_LOG.md
+  description: Stage AI log update
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git commit -m "$(cat <<'EOF'
+docs: note refresh revocation fix
+
+Record the expired refresh token revocation update in the AI log.
+EOF
+)"
+  description: Commit AI log update
+
+[Tool result] Shell
+
+assistant:
+[Tool call] Shell
+  command: git status -sb
+  description: Check git status after commits
+
+[Tool result] Shell
+
+assistant:
+Updated `AI_LOG.md` and committed in two logical commits:
+
+- `fix: persist expired refresh revocations`
+- `docs: note refresh revocation fix`
+
+Branch is now `ahead 7`. Want me to push?
