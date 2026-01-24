@@ -91,17 +91,20 @@ def login(
 def refresh(
     payload: RefreshRequest,
     request: Request,
-    session: Session = Depends(get_db),
 ) -> TokenResponse:
-    service = AuthService(session)
+    SessionLocal = get_sessionmaker()
     ip_address, device_id = _get_request_context(request)
 
-    with session.begin():
-        tokens = service.rotate_refresh_token(payload.refresh_token, ip_address, device_id)
-        if not tokens:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid refresh token"
-            )
+    tokens: dict | None = None
+    with SessionLocal.begin() as refresh_session:
+        tokens = AuthService(refresh_session).rotate_refresh_token(
+            payload.refresh_token, ip_address, device_id
+        )
+
+    if not tokens:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid refresh token"
+        )
 
     return TokenResponse(**tokens)
 

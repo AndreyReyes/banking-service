@@ -181,3 +181,34 @@ def test_refresh_rotates_token_and_logs_audit(tmp_path: Path, monkeypatch) -> No
         )
         assert audit_logs
         assert audit_logs[0].device_id == "device-xyz"
+
+
+def test_expired_refresh_token_is_revoked(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setenv("REFRESH_TOKEN_TTL_DAYS", "-1")
+    database_url = _configure_test_db(tmp_path, monkeypatch)
+    _apply_migrations(database_url)
+    app = create_app()
+
+    with TestClient(app) as client:
+        _signup(client, "ada@example.com", "supersecure123")
+
+        login_response = client.post(
+            "/v1/auth/login",
+            headers={"X-Device-Id": "device-expired"},
+            json={"email": "ada@example.com", "password": "supersecure123"},
+        )
+        refresh_token = login_response.json()["refresh_token"]
+
+        refresh_response = client.post(
+            "/v1/auth/refresh",
+            headers={"X-Device-Id": "device-expired"},
+            json={"refresh_token": refresh_token},
+        )
+        assert refresh_response.status_code == 401
+
+    SessionLocal = db_session.get_sessionmaker()
+    with SessionLocal() as session:
+        refresh_row = session.query(RefreshToken).filter_by(
+            token_hash=security.hash_refresh_token(refresh_token)
+        ).one()
+        assert refresh_row.revoked_at is not None
