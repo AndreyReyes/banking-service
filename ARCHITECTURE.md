@@ -40,6 +40,16 @@ Health --> DB
 API --> Health
 ```
 
+### Demo clients (bonus)
+- `DemoCli` (CLI script) and `DemoWeb` (static UI) act as external clients.
+- Both call the same REST API endpoints and use JWT access tokens.
+
+```mermaid
+flowchart LR
+DemoCli["Demo CLI"] --> APIGW
+DemoWeb["Demo Web UI"] --> APIGW
+```
+
 ## Runtime data flow
 1. **Request received** by FastAPI.
 2. **Request ID** assigned/propagated by middleware (`X‑Request‑Id`).

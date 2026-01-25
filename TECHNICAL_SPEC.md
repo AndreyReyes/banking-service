@@ -129,6 +129,41 @@ Notes:
 - `ROADMAP.md` for future improvements.
 - `AI_USAGE.md` documenting AI prompts, iterations, and learnings.
 
+## Bonus Deliverables (Test client + simple frontend)
+### Test client application (integration demo flow)
+- Location: `tests/integration/test_demo_flow.py`
+- Flow: signup → login → create two accounts → deposit → transfer → statement.
+- Endpoints used:
+  - `POST /v1/auth/signup`
+  - `POST /v1/auth/login`
+  - `POST /v1/accounts`
+  - `POST /v1/transactions` (deposit)
+  - `POST /v1/transfers`
+  - `GET /v1/statements/{account_id}`
+- Checks:
+  - Auth tokens returned and used for protected routes.
+  - Deposit increases balance.
+  - Transfer decreases source and increases destination.
+  - Statement includes expected transactions.
+
+### CLI demo client (interactive + config-driven)
+- Location: `scripts/demo_client.py`
+- Interactive mode prompts for base URL, user info, and amounts.
+- Config mode accepts a JSON sequence of steps.
+
+### Simple frontend interface (static)
+- Location: `frontend/` (static HTML/JS/CSS).
+- Minimal screens: signup/login, create account, deposit, transfer, statement view.
+- Auth: store access token in memory only (avoid localStorage).
+- Deployment: serve from same origin or configure CORS.
+
+## Future Frontend (recommended upgrade)
+Use a production-grade Vite + React client:
+- Typed API client (OpenAPI or hand-typed models).
+- Auth state management with in-memory tokens and refresh handling.
+- Environment-based `BASE_URL` and build-time config.
+- CI build + lint; deploy as static assets behind a reverse proxy.
+
 ## Git Workflow
 - Conventional commits (e.g., `feat:`, `fix:`, `test:`, `docs:`).
 - Small, frequent commits tied to completed tests.

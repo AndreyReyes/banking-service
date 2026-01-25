@@ -93,3 +93,27 @@ docker run --rm -p 8000:8000 \
 ```bash
 docker compose up --build
 ```
+
+## Bonus: Demo client + frontend
+
+This project includes specs for a demo flow that exercises the API end-to-end,
+plus a minimal frontend for showcasing the flow.
+
+### Integration demo flow (test client)
+- Target file: `tests/integration/test_demo_flow.py`
+- Flow: signup → login → create two accounts → deposit → transfer → statement
+- Run (when implemented):
+  - `pytest tests/integration/test_demo_flow.py`
+
+### CLI demo client (interactive + config-driven)
+- Target file: `scripts/demo_client.py`
+- Interactive mode prompts for base URL, user details, and amounts
+- Config mode accepts a JSON sequence of steps
+- Run (when implemented):
+  - `python scripts/demo_client.py --interactive`
+  - `python scripts/demo_client.py --config scripts/demo_flow.json`
+
+### Simple frontend interface
+- Target folder: `frontend/` (static HTML/JS/CSS)
+- Features: signup/login, create account, deposit, transfer, view statement
+- Notes: keep tokens in memory; use same-origin proxy or enable CORS as needed

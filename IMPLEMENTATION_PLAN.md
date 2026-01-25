@@ -166,6 +166,16 @@ This plan maps `MILESTONES.md` into test‑first execution steps and commit gate
 - Commit gate:
   - Docs complete and consistent.
 
+**Checkpoint: Bonus demo deliverables**
+- Tests to write:
+  - Integration demo flow covering signup, login, accounts, deposit, transfer, statement.
+- Implementation steps:
+  - Add integration demo test under `tests/integration/`.
+  - Add CLI demo client with interactive and config-driven modes.
+  - Add minimal static frontend spec and run notes.
+- Commit gate:
+  - Demo flow test green and documentation updated.
+
 ## Dependencies and ordering
 - Health endpoint requires minimal app setup.
 - DB wiring before models/services.

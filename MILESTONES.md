@@ -31,6 +31,9 @@ Each checklist item is a shippable slice validated by tests‑first and separate
 - [x] Containerization + env configs
 - [x] Test coverage checkpoint (prove completeness)
 - [x] Documentation + AI usage report
+- [ ] Bonus demo flow integration test
+- [ ] Bonus CLI demo client (interactive + config-driven)
+- [ ] Bonus simple frontend interface
 
 ## How to read this plan
 They’re a milestone‑based delivery plan + quality gates, broken into incremental TDD checkpoints.
