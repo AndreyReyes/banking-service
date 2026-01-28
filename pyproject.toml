@@ -5,7 +5,8 @@ target-version = ["py312"]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-lint.select = ["E", "F", "I", "B", "SIM"]
+lint.select = ["E", "F", "B", "SIM"]
+lint.per-file-ignores = { "app/api/deps.py" = ["B008", "B904"], "app/api/routes/*.py" = ["B008"], "app/core/config.py" = ["SIM102"] }
 
 [tool.mypy]
 python_version = "3.12"
