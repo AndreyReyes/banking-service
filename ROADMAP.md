@@ -9,6 +9,7 @@ Planned work items and follow-ups for the banking service.
   statuses (400, 403, 404, 409, 422, 500) to ensure consistent payloads.
 - Add demo flow integration test and CLI client for end-to-end validation.
 - Add a minimal static frontend to showcase the core flow.
+- Re-enable Black formatting checks after repo-wide formatting cleanup.
 
 ## Mid-term
 - Adopt a Vite + React frontend with a typed API client and auth flow.
