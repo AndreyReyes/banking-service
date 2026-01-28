@@ -1,4 +1,3 @@
-from datetime import date
 from pathlib import Path
 
 from alembic import command

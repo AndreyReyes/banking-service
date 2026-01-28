@@ -1,9 +1,7 @@
 import os
 import shutil
 import subprocess
-import time
 from pathlib import Path
-from urllib.error import URLError
 from urllib.request import urlopen
 
 import pytest
@@ -16,7 +14,9 @@ COMPOSE_PATH = PROJECT_ROOT / "docker-compose.yml"
 def test_dockerfile_is_multistage() -> None:
     assert DOCKERFILE_PATH.exists(), "Dockerfile is missing"
     contents = DOCKERFILE_PATH.read_text(encoding="utf-8")
-    from_lines = [line for line in contents.splitlines() if line.strip().lower().startswith("from ")]
+    from_lines = [
+        line for line in contents.splitlines() if line.strip().lower().startswith("from ")
+    ]
     assert len(from_lines) >= 2, "Dockerfile should use multi-stage builds"
     assert "as builder" in contents.lower(), "Dockerfile should include a builder stage"
     assert "as runtime" in contents.lower(), "Dockerfile should include a runtime stage"
