@@ -10,6 +10,7 @@ Planned work items and follow-ups for the banking service.
 - Add demo flow integration test and CLI client for end-to-end validation.
 - Add a minimal static frontend to showcase the core flow.
 - Re-enable Black formatting checks after repo-wide formatting cleanup.
+- Re-enable mypy checks after resolving route/schema type mismatches.
 
 ## Mid-term
 - Adopt a Vite + React frontend with a typed API client and auth flow.
