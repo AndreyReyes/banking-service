@@ -6,6 +6,8 @@ This project is built using incremental TDD milestones and quality gates.
 
 See [MILESTONES.md](./MILESTONES.md) for the full test checkpoint + commit plan.
 See [DEPENDENCIES.md](./DEPENDENCIES.md) for dependency rationale.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
+See [WORKFLOW.md](./WORKFLOW.md) for the git workflow.
 
 ## Tech Stack
 
@@ -48,11 +50,29 @@ Set environment variables before running the app or tests:
 - `APP_ENV` (dev/test/prod)
 - `DATABASE_URL`
 - `LOG_LEVEL`
+- `AUTO_MIGRATE` (defaults to true in dev, false in test/prod)
 - `JWT_SECRET` (required in production; app fails fast if unset)
 - `CORS_ORIGINS`
 
 Notes:
 - In production (`APP_ENV=prod`/`production`), `JWT_SECRET` must be set to a non-default value.
+- In production, `AUTO_MIGRATE` must be disabled (defaults to false).
+
+### Dev vs production behavior
+- **dev** (default when `APP_ENV` is unset):
+  - `AUTO_MIGRATE=true` by default to apply Alembic migrations on startup.
+  - Intended for local development and demo usage.
+- **test**:
+  - Used by the test suite (set in tests) to keep behavior predictable.
+  - `AUTO_MIGRATE=false` unless explicitly enabled for a test.
+- **prod/production**:
+  - Requires a non-default `JWT_SECRET`.
+  - `AUTO_MIGRATE` must be disabled (enforced).
+
+### Where to set it
+- Local shell: `export APP_ENV=dev` (or `prod`) before running `uvicorn`.
+- Docker: pass `-e APP_ENV=dev` (or `prod`) in `docker run` / compose.
+- CI or deployment: set `APP_ENV` in your environment or secrets manager.
 
 ## Tests
 
@@ -63,6 +83,17 @@ pytest
 Coverage is enforced at 92% for the `app` package. For optional Docker smoke
 tests, set `RUN_DOCKER_TESTS=1` and ensure Docker + Docker Compose are
 installed.
+
+## CI/CD
+
+GitHub Actions runs on pushes and PRs to `master` with these checks:
+
+```bash
+ruff check .
+black --check .
+mypy .
+pytest
+```
 
 Docker requirements:
 - Docker Engine 29.1.5+ (tested on Ubuntu 24.04).
@@ -96,24 +127,30 @@ docker compose up --build
 
 ## Bonus: Demo client + frontend
 
-This project includes specs for a demo flow that exercises the API end-to-end,
-plus a minimal frontend for showcasing the flow.
+This project includes a demo flow that exercises the API end-to-end, plus a
+minimal frontend for showcasing the flow.
 
 ### Integration demo flow (test client)
 - Target file: `tests/integration/test_demo_flow.py`
 - Flow: signup → login → create two accounts → deposit → transfer → statement
-- Run (when implemented):
+- Run:
   - `pytest tests/integration/test_demo_flow.py`
 
 ### CLI demo client (interactive + config-driven)
 - Target file: `scripts/demo_client.py`
 - Interactive mode prompts for base URL, user details, and amounts
-- Config mode accepts a JSON sequence of steps
-- Run (when implemented):
+- Config mode accepts a JSON sequence of steps with `save_as` references
+- Run:
   - `python scripts/demo_client.py --interactive`
   - `python scripts/demo_client.py --config scripts/demo_flow.json`
 
 ### Simple frontend interface
 - Target folder: `frontend/` (static HTML/JS/CSS)
 - Features: signup/login, create account, deposit, transfer, view statement
+- Run (same-origin, no CORS):
+  - `uvicorn app.main:app --reload`
+  - Open `http://localhost:8000` (frontend served by API)
+- Run (separate static server):
+  - `python -m http.server --directory frontend 8081`
+  - Open `http://localhost:8081` and set base URL to the API
 - Notes: keep tokens in memory; use same-origin proxy or enable CORS as needed
