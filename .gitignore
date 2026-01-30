@@ -7,4 +7,6 @@ __pycache__/
 htmlcov/
 *.sqlite3
 *.db
+*.db-shm
+*.db-wal
 .env
