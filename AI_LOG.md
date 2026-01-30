@@ -238,3 +238,29 @@
   `scripts/demo_flow.json` sample steps.
 - Added static demo UI under `frontend/` with HTML/JS/CSS.
 - Documented demo usage in `README.md` and marked bonus milestones complete.
+
+## Phase 5: Frontend multi-user sessions + token refresh UX
+
+### Summary of prompts and iterations
+- Requested frontend updates for multi-user sessions, token expiry display,
+  refresh controls, withdrawal actions, and keep-alive prompt behavior.
+- Asked for documentation updates across root markdown files and workflow alignment.
+
+### How AI was used
+- Implemented multi-user in-memory token state, refresh handling, and UI updates
+  for user-specific actions in the demo frontend.
+- Added a keep-alive modal triggered three minutes before token expiry.
+- Updated README, implementation plan, architecture, and technical spec to match.
+- Ran the full test suite to confirm coverage and integration tests stayed green.
+
+### Challenges encountered and solutions
+- Ensured token refresh UX stayed demo-only by keeping all tokens in memory.
+
+### Manual intervention required
+- None.
+
+### Things achieved
+- Added user selectors across user-specific actions, token expiry display, and
+  refresh controls in `frontend/`.
+- Added withdrawal action support in the demo UI.
+- Updated root docs to reflect the new frontend behavior and workflow guidance.
