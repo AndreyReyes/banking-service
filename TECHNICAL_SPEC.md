@@ -153,8 +153,10 @@ Notes:
 
 ### Simple frontend interface (static)
 - Location: `frontend/` (static HTML/JS/CSS).
-- Minimal screens: signup/login, create account, deposit, transfer, statement view.
-- Auth: store access token in memory only (avoid localStorage).
+- Minimal screens: signup/login, multi-user selector, token expiry display,
+  refresh prompt + manual refresh button, create account, deposit, withdrawal,
+  transfer, statement view.
+- Auth: store access + refresh tokens in memory only (avoid localStorage).
 - Deployment: serve from same origin or configure CORS.
 
 ## Future Frontend (recommended upgrade)

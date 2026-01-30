@@ -43,6 +43,8 @@ API --> Health
 ### Demo clients (bonus)
 - `DemoCli` (CLI script) and `DemoWeb` (static UI) act as external clients.
 - Both call the same REST API endpoints and use JWT access tokens.
+- `DemoWeb` stores access + refresh tokens in memory, shows expiry status, and
+  prompts for refresh before expiry (demo-only behavior).
 
 ```mermaid
 flowchart LR

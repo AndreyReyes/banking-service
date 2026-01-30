@@ -147,11 +147,13 @@ minimal frontend for showcasing the flow.
 
 ### Simple frontend interface
 - Target folder: `frontend/` (static HTML/JS/CSS)
-- Features: signup/login, create account, deposit, transfer, view statement
+- Features: signup/login, multi-user selector, token expiry display, refresh prompt,
+  create account, deposit, withdrawal, transfer, view statement
 - Run (same-origin, no CORS):
   - `uvicorn app.main:app --reload`
   - Open `http://localhost:8000` (frontend served by API)
 - Run (separate static server):
   - `python -m http.server --directory frontend 8081`
   - Open `http://localhost:8081` and set base URL to the API
-- Notes: keep tokens in memory; use same-origin proxy or enable CORS as needed
+- Notes: tokens are stored in memory only for the demo (including refresh tokens);
+  use same-origin proxy or enable CORS as needed

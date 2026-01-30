@@ -172,7 +172,8 @@ This plan maps `MILESTONES.md` into test‑first execution steps and commit gate
 - Implementation steps:
   - Add integration demo test under `tests/integration/`.
   - Add CLI demo client with interactive and config-driven modes.
-  - Add minimal static frontend spec and run notes.
+  - Add minimal static frontend with multi-user selector, token expiry display,
+    refresh prompt + manual refresh button, and withdrawal action.
 - Commit gate:
   - Demo flow test green and documentation updated.
 
