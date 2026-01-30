@@ -38,8 +38,6 @@ Run the full local checks before opening a PR:
 
 ```bash
 ruff check .
-black --check .
-mypy .
 pytest
 ```
 

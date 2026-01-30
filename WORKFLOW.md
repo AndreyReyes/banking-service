@@ -38,7 +38,7 @@ Open a PR early and keep it small. Merge once CI passes.
 
 For multiple developers:
 - Require PRs for `master`
-- Require CI checks (lint/format/type/test)
+- Require CI checks (lint/test while format/type are deferred)
 - Keep branches short-lived (hours/days, not weeks)
 - Prefer rebase over long-running merge commits
 

@@ -90,8 +90,6 @@ GitHub Actions runs on pushes and PRs to `master` with these checks:
 
 ```bash
 ruff check .
-black --check .
-mypy .
 pytest
 ```
 
