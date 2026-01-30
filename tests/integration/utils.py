@@ -17,6 +17,7 @@ def configure_test_db(tmp_path: Path, monkeypatch, name: str) -> str:
     db_file = tmp_path / f"{name}.db"
     database_url = f"sqlite:///{db_file}"
     monkeypatch.setenv("DATABASE_URL", database_url)
+    monkeypatch.setenv("APP_ENV", "test")
     app_config.get_settings.cache_clear()
     db_session.get_engine.cache_clear()
     return database_url

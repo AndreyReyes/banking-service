@@ -3,6 +3,8 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Generator
 
+from alembic import command
+from alembic.config import Config
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -74,3 +76,11 @@ def assert_db_healthy() -> None:
     engine = get_engine()
     if not check_db_health(engine):
         raise RuntimeError("Database health check failed")
+
+
+def run_migrations(database_url: str | None = None) -> None:
+    resolved_url = database_url or get_settings().database_url
+    config = Config("alembic.ini")
+    config.set_main_option("script_location", "app/db/migrations")
+    config.set_main_option("sqlalchemy.url", resolved_url)
+    command.upgrade(config, "head")

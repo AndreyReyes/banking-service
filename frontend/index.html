@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Banking Service Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Banking Service Demo</h1>
+        <p>Minimal UI for the demo flow (tokens stored in memory only).</p>
+      </header>
+
+      <section class="panel">
+        <h2>Base URL</h2>
+        <label>
+          API base URL
+          <input id="base-url" type="url" value="http://localhost:8000" />
+        </label>
+      </section>
+
+      <section class="panel">
+        <h2>Signup</h2>
+        <form id="signup-form">
+          <div class="grid">
+            <label>Email <input name="email" type="email" required /></label>
+            <label>Password <input name="password" type="password" required /></label>
+            <label>First name <input name="first_name" required /></label>
+            <label>Last name <input name="last_name" required /></label>
+            <label>Date of birth <input name="dob" type="date" required /></label>
+          </div>
+          <button type="submit">Create user</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="grid">
+            <label>Email <input name="email" type="email" required /></label>
+            <label>Password <input name="password" type="password" required /></label>
+            <label>Device ID <input name="device_id" value="demo-web" /></label>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <div class="status" id="auth-status">Not authenticated</div>
+      </section>
+
+      <section class="panel">
+        <h2>Create Account</h2>
+        <form id="account-form">
+          <div class="grid">
+            <label>Type
+              <select name="type">
+                <option value="checking">Checking</option>
+                <option value="savings">Savings</option>
+              </select>
+            </label>
+            <label>Currency <input name="currency" value="USD" /></label>
+          </div>
+          <button type="submit">Create account</button>
+        </form>
+        <div id="accounts-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Deposit</h2>
+        <form id="deposit-form">
+          <div class="grid">
+            <label>Account
+              <select id="deposit-account"></select>
+            </label>
+            <label>Amount (minor units)
+              <input name="amount" type="number" min="1" value="10000" />
+            </label>
+            <label>Currency <input name="currency" value="USD" /></label>
+          </div>
+          <button type="submit">Deposit</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Transfer</h2>
+        <form id="transfer-form">
+          <div class="grid">
+            <label>From account
+              <select id="transfer-from"></select>
+            </label>
+            <label>To account
+              <select id="transfer-to"></select>
+            </label>
+            <label>Amount (minor units)
+              <input name="amount" type="number" min="1" value="2500" />
+            </label>
+            <label>Currency <input name="currency" value="USD" /></label>
+          </div>
+          <button type="submit">Transfer</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Statement</h2>
+        <form id="statement-form">
+          <div class="grid">
+            <label>Account
+              <select id="statement-account"></select>
+            </label>
+          </div>
+          <button type="submit">Fetch statement</button>
+        </form>
+        <pre id="statement-output"></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Log</h2>
+        <pre id="log"></pre>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

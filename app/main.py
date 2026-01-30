@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.api.routes.account_holders import router as account_holders_router
 from app.api.routes.accounts import router as accounts_router
@@ -12,7 +15,7 @@ from app.core.config import get_settings
 from app.core.errors import add_exception_handlers
 from app.core.logging import configure_logging
 from app.core.middleware import RequestLoggingMiddleware
-from app.db.session import assert_db_healthy
+from app.db.session import assert_db_healthy, run_migrations
 
 
 def create_app() -> FastAPI:
@@ -35,9 +38,15 @@ def create_app() -> FastAPI:
     app.include_router(cards_router)
     app.include_router(statements_router)
 
+    frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+    if frontend_dir.exists():
+        app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+
     @app.on_event("startup")
     def _startup_health_check() -> None:
         assert_db_healthy()
+        if settings.auto_migrate:
+            run_migrations(settings.database_url)
 
     return app
 

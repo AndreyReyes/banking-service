@@ -1,0 +1,54 @@
+{
+  "base_url": "http://localhost:8000",
+  "steps": [
+    {
+      "action": "signup",
+      "email": "demo@example.com",
+      "password": "supersecure123",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "dob": "1990-01-01"
+    },
+    {
+      "action": "login",
+      "email": "demo@example.com",
+      "password": "supersecure123",
+      "device_id": "demo-cli"
+    },
+    {
+      "action": "create_account",
+      "type": "checking",
+      "currency": "USD",
+      "save_as": "source_account"
+    },
+    {
+      "action": "create_account",
+      "type": "savings",
+      "currency": "USD",
+      "save_as": "destination_account"
+    },
+    {
+      "action": "deposit",
+      "account_ref": "source_account",
+      "amount": 10000,
+      "currency": "USD"
+    },
+    {
+      "action": "transfer",
+      "from_account_ref": "source_account",
+      "to_account_ref": "destination_account",
+      "amount": 2500,
+      "currency": "USD"
+    },
+    {
+      "action": "statement",
+      "account_ref": "source_account",
+      "save_as": "source_statement"
+    },
+    {
+      "action": "statement",
+      "account_ref": "destination_account",
+      "save_as": "destination_statement"
+    }
+  ]
+}
