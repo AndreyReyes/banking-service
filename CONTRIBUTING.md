@@ -32,6 +32,13 @@ Use conventional commits:
 - `docs: clarify setup steps`
 - `test: cover transfer reversal`
 
+## Commit hygiene
+
+- Keep commits focused to one logical change; prefer 3–5 files max.
+- Commit after each testable slice or passing test.
+- If a change spans subsystems, split into separate commits or PRs.
+- Use a separate commit for tests before implementation (TDD).
+
 ## Tests and quality checks
 
 Run the full local checks before opening a PR:
@@ -49,11 +56,20 @@ Notes:
 Write a failing test before implementing new behavior. Add unit tests for
 services and integration tests for endpoints where appropriate.
 
+Suggested commit order:
+- `test:` add failing test
+- `feat:` or `fix:` implement behavior
+- `docs:` update docs if behavior changed
+
 ## Pull requests
 
 PRs should include:
 - A clear summary of behavior changes
 - Test evidence (commands run)
 - Any docs updates required
+
+PR sizing guidelines:
+- Prefer <300 lines diff per PR; split larger work.
+- Keep PRs to one feature or fix; avoid multi-domain bundles.
 
 See the PR template for the checklist.

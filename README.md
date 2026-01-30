@@ -9,6 +9,13 @@ See [DEPENDENCIES.md](./DEPENDENCIES.md) for dependency rationale.
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
 See [WORKFLOW.md](./WORKFLOW.md) for the git workflow.
 
+## Commit hygiene
+
+- Keep commits focused to one logical change; prefer 3–5 files max.
+- Commit after each passing test or functional slice.
+- Split cross-cutting work into separate commits or PRs.
+- Follow TDD: commit failing tests before implementation.
+
 ## Tech Stack
 
 | Component | Library/Tool | Purpose | Version |

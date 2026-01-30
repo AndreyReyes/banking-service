@@ -34,6 +34,15 @@ git rebase origin/master
 
 Open a PR early and keep it small. Merge once CI passes.
 
+Commit sizing:
+- One logical change per commit (avoid multi-domain bundles).
+- Prefer 3–5 files per commit when possible.
+- Commit after each passing test or functional slice.
+
+PR sizing:
+- Prefer <300 lines diff per PR.
+- Split work across PRs if it spans multiple subsystems.
+
 ## CI expectations
 
 Current CI checks (as defined in `.github/workflows/ci.yml`):
