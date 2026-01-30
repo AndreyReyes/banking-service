@@ -63,6 +63,14 @@ button:hover {
   background: #245bd6;
 }
 
+button.secondary {
+  background: #475569;
+}
+
+button.secondary:hover {
+  background: #334155;
+}
+
 pre {
   background: #0f172a;
   color: #e2e8f0;
@@ -75,4 +83,40 @@ pre {
 .status {
   margin-top: 8px;
   font-weight: bold;
+}
+
+.token-status {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: #1f2933;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 16px;
+}
+
+.modal.is-open {
+  display: flex;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.3);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
 }
