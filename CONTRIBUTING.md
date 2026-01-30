@@ -41,6 +41,9 @@ ruff check .
 pytest
 ```
 
+Notes:
+- Black and mypy are intentionally deferred until cleanup (see `ROADMAP.md`).
+
 ## TDD expectation
 
 Write a failing test before implementing new behavior. Add unit tests for

@@ -93,6 +93,9 @@ ruff check .
 pytest
 ```
 
+Notes:
+- Black and mypy are intentionally deferred until cleanup (see `ROADMAP.md`).
+
 Docker requirements:
 - Docker Engine 29.1.5+ (tested on Ubuntu 24.04).
 - Docker Compose v5.0.1+ via `docker compose`.

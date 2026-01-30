@@ -211,3 +211,30 @@
 - Ran container smoke tests successfully with `RUN_DOCKER_TESTS=1` and the full
   test suite passing.
 - Marked Phase 5 operational milestones complete in `MILESTONES.md`.
+
+## Phase 5: Checkpoint: Bonus demo deliverables
+
+### Summary of prompts and iterations
+- Requested regression testing before Phase 5 bonus work and TDD-first changes.
+- Asked for demo flow test, CLI demo client, and simple frontend deliverables.
+- Required milestones updates and appended AI usage documentation.
+
+### How AI was used
+- Ran regression tests in a fresh venv and created a demo flow integration test.
+- Implemented a config-driven and interactive CLI demo client and sample flow JSON.
+- Built a minimal static frontend for the signup/login/account/transfer/statement flow.
+- Updated README usage instructions and milestone checkboxes.
+
+### Challenges encountered and solutions
+- `pytest` was not found initially; created a venv and installed dev requirements.
+- Running only the new test failed the coverage gate; resolved by running full suite.
+
+### Manual intervention required
+- None.
+
+### Things achieved
+- Added `tests/integration/test_demo_flow.py` covering the end-to-end demo flow.
+- Added `scripts/demo_client.py` with interactive and JSON config modes plus
+  `scripts/demo_flow.json` sample steps.
+- Added static demo UI under `frontend/` with HTML/JS/CSS.
+- Documented demo usage in `README.md` and marked bonus milestones complete.

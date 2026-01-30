@@ -34,6 +34,18 @@ git rebase origin/master
 
 Open a PR early and keep it small. Merge once CI passes.
 
+## CI expectations
+
+Current CI checks (as defined in `.github/workflows/ci.yml`):
+
+```bash
+ruff check .
+pytest
+```
+
+Notes:
+- Black and mypy are intentionally deferred until cleanup (see `ROADMAP.md`).
+
 ## Concurrent development
 
 For multiple developers:
