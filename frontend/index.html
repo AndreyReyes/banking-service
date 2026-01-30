@@ -49,9 +49,28 @@
       </section>
 
       <section class="panel">
+        <h2>User Session</h2>
+        <div class="grid">
+          <label>Active user
+            <select id="active-user" data-user-select></select>
+          </label>
+          <div class="token-status">
+            <div><strong>Access token:</strong> <span id="token-expiry-relative">--</span></div>
+            <div><strong>Expires at:</strong> <span id="token-expiry-absolute">--</span></div>
+            <div><strong>Refresh token:</strong> <span id="token-refresh-present">--</span></div>
+            <div><strong>Last refresh:</strong> <span id="token-last-refresh">--</span></div>
+          </div>
+        </div>
+        <button id="refresh-token" type="button">Refresh token</button>
+      </section>
+
+      <section class="panel">
         <h2>Create Account</h2>
         <form id="account-form">
           <div class="grid">
+            <label>User
+              <select data-user-select></select>
+            </label>
             <label>Type
               <select name="type">
                 <option value="checking">Checking</option>
@@ -69,6 +88,9 @@
         <h2>Deposit</h2>
         <form id="deposit-form">
           <div class="grid">
+            <label>User
+              <select data-user-select></select>
+            </label>
             <label>Account
               <select id="deposit-account"></select>
             </label>
@@ -82,9 +104,31 @@
       </section>
 
       <section class="panel">
+        <h2>Withdrawal</h2>
+        <form id="withdrawal-form">
+          <div class="grid">
+            <label>User
+              <select data-user-select></select>
+            </label>
+            <label>Account
+              <select id="withdrawal-account"></select>
+            </label>
+            <label>Amount (minor units)
+              <input name="amount" type="number" min="1" value="500" />
+            </label>
+            <label>Currency <input name="currency" value="USD" /></label>
+          </div>
+          <button type="submit">Withdraw</button>
+        </form>
+      </section>
+
+      <section class="panel">
         <h2>Transfer</h2>
         <form id="transfer-form">
           <div class="grid">
+            <label>User
+              <select data-user-select></select>
+            </label>
             <label>From account
               <select id="transfer-from"></select>
             </label>
@@ -104,6 +148,9 @@
         <h2>Statement</h2>
         <form id="statement-form">
           <div class="grid">
+            <label>User
+              <select data-user-select></select>
+            </label>
             <label>Account
               <select id="statement-account"></select>
             </label>
@@ -117,6 +164,17 @@
         <h2>Log</h2>
         <pre id="log"></pre>
       </section>
+    </div>
+
+    <div class="modal" id="keep-alive-modal" aria-hidden="true">
+      <div class="modal-content">
+        <h3>Keep session alive?</h3>
+        <p>Your access token expires soon. Refresh the session?</p>
+        <div class="modal-actions">
+          <button id="keep-alive-yes" type="button">Yes, refresh</button>
+          <button id="keep-alive-no" type="button">No, let it expire</button>
+        </div>
+      </div>
     </div>
 
     <script src="app.js"></script>
