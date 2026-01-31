@@ -12,4 +12,3 @@ htmlcov
 *.sqlite3
 .env
 ai_chats
-tests
