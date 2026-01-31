@@ -154,6 +154,14 @@ serves both the API and the static frontend from the same service.
   manually via the Render shell.
 - The health check path is `/v1/health`.
 
+### Automated migrations (production)
+If you are using Render's Python runtime and do not have shell access, configure
+the start command to run migrations before the server:
+- Start command:
+  - `sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"`
+- Keep `APP_ENV=production` and `AUTO_MIGRATE=false` so only this explicit
+  startup step runs migrations.
+
 ## Bonus: Demo client + frontend
 
 This project includes a demo flow that exercises the API end-to-end, plus a
