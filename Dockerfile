@@ -45,5 +45,7 @@ RUN python -m pip install --no-cache-dir -r requirements-dev.txt
 
 COPY tests ./tests
 COPY frontend ./frontend
+COPY Dockerfile ./Dockerfile
+COPY docker-compose.yml ./docker-compose.yml
 
 USER appuser
