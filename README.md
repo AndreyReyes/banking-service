@@ -158,7 +158,7 @@ serves both the API and the static frontend from the same service.
 If you are using Render's Python runtime and do not have shell access, configure
 the start command to run migrations before the server:
 - Start command:
-  - `sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"`
+  - `sh -c "PYTHONPATH=/opt/render/project/src alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"`
 - Keep `APP_ENV=production` and `AUTO_MIGRATE=false` so only this explicit
   startup step runs migrations.
 
