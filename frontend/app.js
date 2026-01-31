@@ -1,5 +1,5 @@
 const state = {
-  baseUrl: "http://localhost:8000",
+  baseUrl: window.location.origin,
   users: [],
   activeUserKey: null,
   accountsByUser: {},

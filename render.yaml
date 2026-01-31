@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: banking-service
+    env: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /v1/health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: AUTO_MIGRATE
+        value: "false"
+      - key: DATABASE_URL
+        value: sqlite:////app/data/banking.db
+      - key: JWT_SECRET
+        sync: false
+    disk:
+      name: banking_data
+      mountPath: /app/data
+      sizeGB: 1

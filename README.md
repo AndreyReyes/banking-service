@@ -134,6 +134,26 @@ docker run --rm -p 8000:8000 \
 docker compose up --build
 ```
 
+## Deploy to Render (GitHub)
+
+This repo includes a `render.yaml` Blueprint for a Docker-based deployment that
+serves both the API and the static frontend from the same service.
+
+### Steps
+- In Render, create a new service from this GitHub repo and select the
+  `render.yaml` Blueprint.
+- Configure required secrets:
+  - `JWT_SECRET` (must be a non-default value in production).
+- The Blueprint configures a persistent disk at `/app/data` and sets
+  `DATABASE_URL=sqlite:////app/data/banking.db`.
+- After the first deploy, open the Render shell for the service and run:
+  - `alembic upgrade head`
+
+### Notes
+- `AUTO_MIGRATE` is disabled in production for safety; migrations are run
+  manually via the Render shell.
+- The health check path is `/v1/health`.
+
 ## Bonus: Demo client + frontend
 
 This project includes a demo flow that exercises the API end-to-end, plus a
