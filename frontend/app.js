@@ -20,6 +20,7 @@ const keepAliveYes = document.getElementById("keep-alive-yes");
 const keepAliveNo = document.getElementById("keep-alive-no");
 
 const baseUrlInput = document.getElementById("base-url");
+baseUrlInput.value = state.baseUrl;
 baseUrlInput.addEventListener("input", () => {
   state.baseUrl = baseUrlInput.value.replace(/\/+$/, "");
 });
