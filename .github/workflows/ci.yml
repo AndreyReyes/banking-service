@@ -41,7 +41,7 @@ jobs:
       - name: Health check
         run: curl -fsS http://localhost:8000/v1/health
       - name: Run tests in container
-        run: docker compose exec -T app pytest
+        run: docker compose exec -T api pytest
       - name: Stop containers
         if: always()
         run: docker compose down -v
