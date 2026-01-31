@@ -7,7 +7,7 @@ on:
     branches: ["master"]
 
 jobs:
-  test:
+  host-tests:
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -29,3 +29,19 @@ jobs:
         run: ruff check .
       - name: Tests
         run: pytest
+  container-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build container image
+        run: docker build -t banking-service:ci .
+      - name: Start containers
+        run: docker compose up -d --build --wait --wait-timeout 30
+      - name: Health check
+        run: curl -fsS http://localhost:8000/v1/health
+      - name: Run tests in container
+        run: docker compose exec -T app pytest
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v

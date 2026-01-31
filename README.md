@@ -8,6 +8,7 @@ See [MILESTONES.md](./MILESTONES.md) for the full test checkpoint + commit plan.
 See [DEPENDENCIES.md](./DEPENDENCIES.md) for dependency rationale.
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
 See [WORKFLOW.md](./WORKFLOW.md) for the git workflow.
+See [API.md](./API.md) for API endpoints and docs entrypoints.
 
 ## Commit hygiene
 
