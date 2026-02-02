@@ -1,12 +1,16 @@
 # AI Usage Log
 
+Each section below was created by a separate agent following the standard phase
+prompt shown in `AI_USAGE_REPORT.md` (lines 75–78), which asked for regression
+testing (when applicable), implementation, and an appended AI usage summary.
+
 ## FDE tech assessment instructions
 
 ### Prompts and iterations
 
 - Requested creation and commit of `FDE_Tech_Assessment_(T2).md`, then clarified repo state after deleting local and remote git history.
 - Asked for a production-ready stack choice; selected Python, then requested a technical specification.
-- Added a TDD requirement and asked for a Git workflow.
+- Added a Test-Driven Development (TDD) requirement and asked for a Git workflow.
 - Requested the technical specification in both plain and Markdown formats.
 
 ### How AI was used

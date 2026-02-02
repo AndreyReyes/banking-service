@@ -6,7 +6,7 @@ This document describes the system architecture for the banking service, aligned
 - Production‑ready REST API with health/readiness checks and graceful shutdown.
 - Structured JSON logging with correlation IDs.
 - SQLite development DB, portable to Postgres.
-- TDD and comprehensive tests (unit + integration).
+- Test-Driven Development (TDD) and comprehensive tests (unit + integration).
 - Security‑first: no secrets committed, hashed passwords, validated inputs.
 - Ubuntu 24.04 compatibility.
 

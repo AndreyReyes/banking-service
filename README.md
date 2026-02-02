@@ -2,7 +2,8 @@
 
 ## Implementation Plan
 
-This project is built using incremental TDD milestones and quality gates.
+This project is built using incremental Test-Driven Development (TDD)
+milestones and quality gates.
 
 See [MILESTONES.md](./MILESTONES.md) for the full test checkpoint + commit plan.
 See [DEPENDENCIES.md](./DEPENDENCIES.md) for dependency rationale.

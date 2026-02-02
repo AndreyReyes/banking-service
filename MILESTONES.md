@@ -1,4 +1,4 @@
-# Milestones — TDD Checkpoints + Quality Gates
+# Milestones — Test-Driven Development (TDD) Checkpoints + Quality Gates
 
 These milestones represent a checkpoint‑based delivery plan. Each checkpoint is a shippable slice validated by tests‑first and separated by a clean commit.
 

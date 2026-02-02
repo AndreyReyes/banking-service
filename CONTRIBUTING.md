@@ -37,7 +37,7 @@ Use conventional commits:
 - Keep commits focused to one logical change; prefer 3–5 files max.
 - Commit after each testable slice or passing test.
 - If a change spans subsystems, split into separate commits or PRs.
-- Use a separate commit for tests before implementation (TDD).
+- Use a separate commit for tests before implementation (Test-Driven Development (TDD)).
 
 ## Tests and quality checks
 

@@ -113,7 +113,7 @@ Environment variables (validated):
 Notes:
 - `JWT_SECRET` must be explicitly set when `APP_ENV` is `prod`/`production`.
 
-## Testing Strategy (TDD)
+## Testing Strategy (Test-Driven Development (TDD))
 - Red‑Green‑Refactor for each feature.
 - Unit tests for service/business logic.
 - Integration tests for API endpoints and DB behavior.

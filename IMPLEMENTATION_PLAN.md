@@ -1,4 +1,4 @@
-# Implementation Plan — TDD Checkpoints
+# Implementation Plan — Test-Driven Development (TDD) Checkpoints
 
 This plan maps `MILESTONES.md` into test‑first execution steps and commit gates.
 
