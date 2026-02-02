@@ -6,6 +6,7 @@ This document captures security-relevant configuration and operational notes.
 - Never commit secrets to the repository.
 - `JWT_SECRET` must be set in production (`APP_ENV=prod`/`production`).
 - The service fails fast on startup if `JWT_SECRET` is not overridden in production.
+- If a secret is ever exposed, rotate it immediately and invalidate affected tokens.
 
 ## Authentication
 - Passwords are hashed using bcrypt.

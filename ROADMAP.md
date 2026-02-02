@@ -7,6 +7,8 @@ Planned work items and follow-ups for the banking service.
   deprecation warnings and centralize startup/shutdown logic.
 - Add integration coverage for error envelope mappings across common HTTP
   statuses (400, 403, 404, 409, 422, 500) to ensure consistent payloads.
+- Add a lightweight secret-rotation runbook (JWT_SECRET exposure response, token
+  invalidation guidance, and Render env var update steps).
 - Define and implement an admin account model and lifecycle, including:
   - Security and authorization rules for elevated access.
   - How admin accounts are created, stored, and managed.
