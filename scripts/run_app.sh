@@ -49,6 +49,7 @@ case "${MODE}" in
       echo "Missing .venv. Run ./scripts/setup_env.sh first." >&2
       exit 1
     fi
+    mkdir -p "./data"
     # shellcheck disable=SC1091
     source ".venv/bin/activate"
     export APP_ENV="${APP_ENV}"

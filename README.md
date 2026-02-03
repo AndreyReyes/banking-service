@@ -67,6 +67,8 @@ Or run the setup helper:
 ./scripts/setup_env.sh
 ```
 
+Note: the setup script creates a local `./data` directory for the SQLite file.
+
 ## Environment
 
 Set environment variables before running the app or tests:

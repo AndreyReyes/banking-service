@@ -21,6 +21,8 @@ source "${VENV_DIR}/bin/activate"
 python -m pip install --upgrade pip
 python -m pip install -r "${REQUIREMENTS_FILE}"
 
+mkdir -p "${PROJECT_ROOT}/data"
+
 echo ""
 echo "Environment ready."
 echo "Activate with: source \"${VENV_DIR}/bin/activate\""
