@@ -9,6 +9,7 @@ newgrp docker  # refresh group membership after install
 ./scripts/setup_env.sh
 # ./scripts/run_app.sh --env dev --mode native
 ./scripts/run_app.sh --env prod --mode docker  # demo production in Docker
+# Open http://localhost:8000
 ```
 
 ## Implementation Plan
