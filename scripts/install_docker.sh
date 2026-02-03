@@ -8,7 +8,12 @@ if [ "${EUID:-$(id -u)}" -ne 0 ]; then
 fi
 
 apt-get update
-apt-get install -y docker.io docker-compose-plugin
+apt-get install -y docker.io
+
+if ! apt-get install -y docker-compose-plugin; then
+  echo "docker-compose-plugin not found; installing docker-compose." >&2
+  apt-get install -y docker-compose
+fi
 
 if id ubuntu >/dev/null 2>&1; then
   usermod -aG docker ubuntu
