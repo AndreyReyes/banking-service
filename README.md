@@ -4,6 +4,7 @@
 
 ```bash
 sudo ./scripts/install_prereqs.sh
+sudo ./scripts/install_docker.sh  # optional, for docker/compose modes
 ./scripts/setup_env.sh
 ./scripts/run_app.sh --env dev --mode native
 ```

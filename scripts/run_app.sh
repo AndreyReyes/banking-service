@@ -70,7 +70,7 @@ case "${MODE}" in
     ;;
   docker)
     if ! command -v docker >/dev/null 2>&1; then
-      echo "Docker is not installed. Install Docker or use --mode native." >&2
+      echo "Docker is not installed. Run ./scripts/install_docker.sh or use --mode native." >&2
       exit 1
     fi
     if [[ "${APP_ENV}" =~ ^(prod|production)$ ]] && [ "${JWT_SECRET:-dev_insecure_secret_change_me}" = "dev_insecure_secret_change_me" ]; then
@@ -88,7 +88,7 @@ case "${MODE}" in
     ;;
   compose)
     if ! command -v docker >/dev/null 2>&1; then
-      echo "Docker is not installed. Install Docker or use --mode native." >&2
+      echo "Docker is not installed. Run ./scripts/install_docker.sh or use --mode native." >&2
       exit 1
     fi
     export APP_ENV="${APP_ENV}"
