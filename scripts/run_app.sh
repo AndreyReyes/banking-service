@@ -32,6 +32,10 @@ run_prod_migrations_native() {
 
 run_prod_migrations_docker() {
   echo "Running database migrations in Docker for prod..."
+  docker run --rm --user 0 \
+    -v banking_data:/app/data \
+    banking-service:local \
+    sh -c "mkdir -p /app/data && chown -R appuser:appuser /app/data"
   docker run --rm \
     -e PYTHONPATH="/app" \
     -e APP_ENV="${APP_ENV}" \
