@@ -15,12 +15,21 @@ if ! apt-get install -y docker-compose-plugin; then
   apt-get install -y docker-compose
 fi
 
-if id ubuntu >/dev/null 2>&1; then
-  usermod -aG docker ubuntu
-  echo "Added user 'ubuntu' to the docker group."
+target_user="${SUDO_USER:-}"
+if [ -z "${target_user}" ] || [ "${target_user}" = "root" ]; then
+  if id ubuntu >/dev/null 2>&1; then
+    target_user="ubuntu"
+  fi
+fi
+
+if [ -n "${target_user}" ]; then
+  usermod -aG docker "${target_user}"
+  echo "Added user '${target_user}' to the docker group."
 else
   echo "Add your user to the docker group to run without sudo:"
   echo "  sudo usermod -aG docker <your-user>"
 fi
+
+systemctl enable --now docker
 
 echo "Docker installed. You may need to log out and back in for group changes."

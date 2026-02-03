@@ -73,6 +73,11 @@ case "${MODE}" in
       echo "Docker is not installed. Run ./scripts/install_docker.sh or use --mode native." >&2
       exit 1
     fi
+    if ! docker info >/dev/null 2>&1; then
+      echo "Cannot access Docker daemon. Add your user to the docker group or use sudo." >&2
+      echo "Suggested: sudo usermod -aG docker ${USER} && newgrp docker" >&2
+      exit 1
+    fi
     if [[ "${APP_ENV}" =~ ^(prod|production)$ ]] && [ "${JWT_SECRET:-dev_insecure_secret_change_me}" = "dev_insecure_secret_change_me" ]; then
       echo "JWT_SECRET must be set to a non-default value for prod." >&2
       exit 1
@@ -89,6 +94,11 @@ case "${MODE}" in
   compose)
     if ! command -v docker >/dev/null 2>&1; then
       echo "Docker is not installed. Run ./scripts/install_docker.sh or use --mode native." >&2
+      exit 1
+    fi
+    if ! docker info >/dev/null 2>&1; then
+      echo "Cannot access Docker daemon. Add your user to the docker group or use sudo." >&2
+      echo "Suggested: sudo usermod -aG docker ${USER} && newgrp docker" >&2
       exit 1
     fi
     export APP_ENV="${APP_ENV}"
