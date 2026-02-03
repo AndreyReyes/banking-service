@@ -17,9 +17,10 @@ fi
 
 target_user="${SUDO_USER:-}"
 if [ -z "${target_user}" ] || [ "${target_user}" = "root" ]; then
-  if id ubuntu >/dev/null 2>&1; then
-    target_user="ubuntu"
-  fi
+  target_user="$(logname 2>/dev/null || true)"
+fi
+if [ -z "${target_user}" ] || [ "${target_user}" = "root" ]; then
+  target_user="$(id -un 2>/dev/null || true)"
 fi
 
 if [ -n "${target_user}" ]; then
