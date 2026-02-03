@@ -1,5 +1,13 @@
 # Banking Service
 
+## TLDR
+
+```bash
+sudo ./scripts/install_prereqs.sh
+./scripts/setup_env.sh
+./scripts/run_app.sh --env dev --mode native
+```
+
 ## Implementation Plan
 
 This project is built using incremental Test-Driven Development (TDD)
@@ -40,6 +48,12 @@ See [LICENSE](./LICENSE) for usage and evaluation-only terms.
 | Typing | Mypy | Static type checks | 1.19.1 |
 
 ## Setup
+
+On a minimal Ubuntu install, ensure `python3-venv` is available first:
+
+```bash
+sudo ./scripts/install_prereqs.sh
+```
 
 ```bash
 python -m venv .venv
@@ -117,6 +131,16 @@ source .venv/bin/activate
 uvicorn app.main:app --reload
 ```
 
+Or use the run helper:
+
+```bash
+./scripts/run_app.sh --env dev --mode native
+```
+
+Modes and environments supported:
+- `--env dev|test|prod|production`
+- `--mode native|docker|compose`
+
 ## Run with Docker
 
 ```bash
@@ -143,7 +167,7 @@ serves both the API and the static frontend from the same service.
 
 ### Steps
 - In Render, create a new service from this GitHub repo and select the
-  `render.yaml` Blueprint.
+  `render.yaml` Blueprint to run the Docker-based service.
 - Configure required secrets:
   - `JWT_SECRET` (must be a non-default value in production).
 - The Blueprint configures a persistent disk at `/app/data` and sets
@@ -157,8 +181,8 @@ serves both the API and the static frontend from the same service.
 - The health check path is `/v1/health`.
 
 ### Automated migrations (production)
-If you are using Render's Python runtime and do not have shell access, configure
-the start command to run migrations before the server:
+If you are using Render's Python runtime (non-Docker) and do not have shell
+access, configure the start command to run migrations before the server:
 - Start command:
   - `sh -c "PYTHONPATH=/opt/render/project/src alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"`
 - Keep `APP_ENV=production` and `AUTO_MIGRATE=false` so only this explicit
