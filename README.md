@@ -10,6 +10,10 @@ newgrp docker  # refresh group membership after install
 # ./scripts/run_app.sh --env dev --mode native
 ./scripts/run_app.sh --env prod --mode docker  # demo production in Docker
 # Open http://localhost:8000
+# Stop:
+# - native: Ctrl+C
+# - docker: Ctrl+C (if it keeps running, use: docker ps && docker stop <id>)
+# - compose: Ctrl+C, then docker compose down
 ```
 
 ## Implementation Plan
@@ -149,6 +153,8 @@ Or use the run helper:
 ./scripts/run_app.sh --env dev --mode native
 ```
 
+Stop the native app with `Ctrl+C`.
+
 Modes and environments supported:
 - `--env dev|test|prod|production`
 - `--mode native|docker|compose`
@@ -166,11 +172,15 @@ docker run --rm -p 8000:8000 \
   banking-service:local
 ```
 
+Stop the Docker run with `Ctrl+C`.
+
 ## Run with Docker Compose
 
 ```bash
 docker compose up --build
 ```
+
+Stop Compose with `Ctrl+C`, then run `docker compose down`.
 
 ## Deploy to Render (GitHub)
 
