@@ -33,6 +33,7 @@ run_prod_migrations_native() {
 run_prod_migrations_docker() {
   echo "Running database migrations in Docker for prod..."
   docker run --rm \
+    -e PYTHONPATH="/app" \
     -e APP_ENV="${APP_ENV}" \
     -e DATABASE_URL="${DATABASE_URL}" \
     -e LOG_LEVEL="${LOG_LEVEL}" \
