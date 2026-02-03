@@ -5,8 +5,10 @@
 ```bash
 sudo ./scripts/install_prereqs.sh
 sudo ./scripts/install_docker.sh  # optional, for docker/compose modes
+newgrp docker  # refresh group membership after install
 ./scripts/setup_env.sh
-./scripts/run_app.sh --env dev --mode native
+# ./scripts/run_app.sh --env dev --mode native
+./scripts/run_app.sh --env prod --mode docker  # demo production in Docker
 ```
 
 ## Implementation Plan
@@ -130,6 +132,7 @@ Docker requirements:
 Optional install helper (Ubuntu):
 ```bash
 sudo ./scripts/install_docker.sh
+newgrp docker
 ```
 
 ## Run the app

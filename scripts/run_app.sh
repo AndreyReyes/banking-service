@@ -13,6 +13,35 @@ Examples:
 EOF
 }
 
+generate_jwt_secret() {
+  if command -v openssl >/dev/null 2>&1; then
+    openssl rand -base64 32
+    return 0
+  fi
+  python - <<'PY'
+import base64
+import os
+print(base64.b64encode(os.urandom(32)).decode("utf-8"))
+PY
+}
+
+ensure_prod_jwt_secret() {
+  if [[ "${APP_ENV}" =~ ^(prod|production)$ ]] && [ "${JWT_SECRET}" = "dev_insecure_secret_change_me" ]; then
+    if [ -t 0 ]; then
+      read -r -p "JWT_SECRET is not set for prod. Generate one now? [y/N] " reply
+      if [[ "${reply}" =~ ^[Yy]$ ]]; then
+        JWT_SECRET="$(generate_jwt_secret)"
+        export JWT_SECRET
+        echo "Generated JWT_SECRET for this session."
+        return 0
+      fi
+    fi
+    echo "JWT_SECRET must be set to a non-default value for prod." >&2
+    echo "Set JWT_SECRET and re-run, or allow this script to generate one." >&2
+    exit 1
+  fi
+}
+
 APP_ENV="dev"
 MODE="native"
 CURRENT_USER="${SUDO_USER:-${USER}}"
@@ -57,11 +86,8 @@ case "${MODE}" in
     export DATABASE_URL="${DATABASE_URL:-sqlite:///./data/banking.db}"
     export LOG_LEVEL="${LOG_LEVEL:-INFO}"
     export JWT_SECRET="${JWT_SECRET:-dev_insecure_secret_change_me}"
+    ensure_prod_jwt_secret
     if [[ "${APP_ENV}" =~ ^(prod|production)$ ]]; then
-      if [ "${JWT_SECRET}" = "dev_insecure_secret_change_me" ]; then
-        echo "JWT_SECRET must be set to a non-default value for prod." >&2
-        exit 1
-      fi
       uvicorn app.main:app
     elif [ "${APP_ENV}" = "test" ]; then
       uvicorn app.main:app
@@ -79,16 +105,14 @@ case "${MODE}" in
       echo "Suggested: sudo usermod -aG docker ${CURRENT_USER} && newgrp docker" >&2
       exit 1
     fi
-    if [[ "${APP_ENV}" =~ ^(prod|production)$ ]] && [ "${JWT_SECRET:-dev_insecure_secret_change_me}" = "dev_insecure_secret_change_me" ]; then
-      echo "JWT_SECRET must be set to a non-default value for prod." >&2
-      exit 1
-    fi
+    export JWT_SECRET="${JWT_SECRET:-dev_insecure_secret_change_me}"
+    ensure_prod_jwt_secret
     docker build -t banking-service:local .
     docker run --rm -p 8000:8000 \
       -e APP_ENV="${APP_ENV}" \
       -e DATABASE_URL="${DATABASE_URL:-sqlite:///./data/banking.db}" \
       -e LOG_LEVEL="${LOG_LEVEL:-INFO}" \
-      -e JWT_SECRET="${JWT_SECRET:-dev_insecure_secret_change_me}" \
+      -e JWT_SECRET="${JWT_SECRET}" \
       -v banking_data:/app/data \
       banking-service:local
     ;;
