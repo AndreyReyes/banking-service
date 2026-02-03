@@ -56,9 +56,27 @@ case "${MODE}" in
     export DATABASE_URL="${DATABASE_URL:-sqlite:///./data/banking.db}"
     export LOG_LEVEL="${LOG_LEVEL:-INFO}"
     export JWT_SECRET="${JWT_SECRET:-dev_insecure_secret_change_me}"
-    uvicorn app.main:app --reload
+    if [[ "${APP_ENV}" =~ ^(prod|production)$ ]]; then
+      if [ "${JWT_SECRET}" = "dev_insecure_secret_change_me" ]; then
+        echo "JWT_SECRET must be set to a non-default value for prod." >&2
+        exit 1
+      fi
+      uvicorn app.main:app
+    elif [ "${APP_ENV}" = "test" ]; then
+      uvicorn app.main:app
+    else
+      uvicorn app.main:app --reload
+    fi
     ;;
   docker)
+    if ! command -v docker >/dev/null 2>&1; then
+      echo "Docker is not installed. Install Docker or use --mode native." >&2
+      exit 1
+    fi
+    if [[ "${APP_ENV}" =~ ^(prod|production)$ ]] && [ "${JWT_SECRET:-dev_insecure_secret_change_me}" = "dev_insecure_secret_change_me" ]; then
+      echo "JWT_SECRET must be set to a non-default value for prod." >&2
+      exit 1
+    fi
     docker build -t banking-service:local .
     docker run --rm -p 8000:8000 \
       -e APP_ENV="${APP_ENV}" \
@@ -69,6 +87,10 @@ case "${MODE}" in
       banking-service:local
     ;;
   compose)
+    if ! command -v docker >/dev/null 2>&1; then
+      echo "Docker is not installed. Install Docker or use --mode native." >&2
+      exit 1
+    fi
     export APP_ENV="${APP_ENV}"
     docker compose up --build
     ;;

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "${EUID:-$(id -u)}" -ne 0 ]; then
+  echo "This script uses apt; please run with sudo." >&2
+  echo "Example: sudo ./scripts/install_docker.sh" >&2
+  exit 1
+fi
+
+apt-get update
+apt-get install -y docker.io docker-compose-plugin
+
+if id ubuntu >/dev/null 2>&1; then
+  usermod -aG docker ubuntu
+  echo "Added user 'ubuntu' to the docker group."
+else
+  echo "Add your user to the docker group to run without sudo:"
+  echo "  sudo usermod -aG docker <your-user>"
+fi
+
+echo "Docker installed. You may need to log out and back in for group changes."
