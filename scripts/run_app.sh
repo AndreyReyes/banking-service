@@ -124,7 +124,7 @@ case "${MODE}" in
       echo "Suggested: sudo usermod -aG docker ${CURRENT_USER} && newgrp docker" >&2
       exit 1
     fi
-    DATABASE_URL="${DATABASE_URL:-sqlite:///./data/banking.db}"
+    DATABASE_URL="${DATABASE_URL:-sqlite:////app/data/banking.db}"
     LOG_LEVEL="${LOG_LEVEL:-INFO}"
     export JWT_SECRET="${JWT_SECRET:-dev_insecure_secret_change_me}"
     ensure_prod_jwt_secret
