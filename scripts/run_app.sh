@@ -15,6 +15,7 @@ EOF
 
 APP_ENV="dev"
 MODE="native"
+CURRENT_USER="${SUDO_USER:-${USER}}"
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -75,7 +76,7 @@ case "${MODE}" in
     fi
     if ! docker info >/dev/null 2>&1; then
       echo "Cannot access Docker daemon. Add your user to the docker group or use sudo." >&2
-      echo "Suggested: sudo usermod -aG docker ${USER} && newgrp docker" >&2
+      echo "Suggested: sudo usermod -aG docker ${CURRENT_USER} && newgrp docker" >&2
       exit 1
     fi
     if [[ "${APP_ENV}" =~ ^(prod|production)$ ]] && [ "${JWT_SECRET:-dev_insecure_secret_change_me}" = "dev_insecure_secret_change_me" ]; then
@@ -98,7 +99,7 @@ case "${MODE}" in
     fi
     if ! docker info >/dev/null 2>&1; then
       echo "Cannot access Docker daemon. Add your user to the docker group or use sudo." >&2
-      echo "Suggested: sudo usermod -aG docker ${USER} && newgrp docker" >&2
+      echo "Suggested: sudo usermod -aG docker ${CURRENT_USER} && newgrp docker" >&2
       exit 1
     fi
     export APP_ENV="${APP_ENV}"
