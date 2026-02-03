@@ -8,11 +8,23 @@ if [ "${EUID:-$(id -u)}" -ne 0 ]; then
 fi
 
 apt-get update
-apt-get install -y docker.io
 
-if ! apt-get install -y docker-compose-plugin; then
-  echo "docker-compose-plugin not found; installing docker-compose." >&2
-  apt-get install -y docker-compose
+apt-get remove -y docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc || true
+
+apt-get install -y ca-certificates curl gnupg lsb-release
+
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+if ! getent group docker >/dev/null 2>&1; then
+  groupadd docker
 fi
 
 target_user="${SUDO_USER:-}"
@@ -34,3 +46,4 @@ fi
 systemctl enable --now docker
 
 echo "Docker installed. You may need to log out and back in for group changes."
+echo "Or run: newgrp docker"
